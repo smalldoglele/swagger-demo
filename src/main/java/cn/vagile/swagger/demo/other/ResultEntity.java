@@ -2,9 +2,24 @@ package cn.vagile.swagger.demo.other;
 
 import io.swagger.annotations.ApiModel;
 
+/**
+ * 结果实体类
+ * <p>使用示例:
+ * <pre>
+ * //快捷方法 返回status=1
+ * ResultEntity<User> result = ResultEntity.ok();
+ * //快捷方法 返回status=1 和 result={user}
+ * ResultEntity<User> result = ResultEntity.ok(user);
+ * //快捷方法 返回 status=0 和失败信息
+ * ResultEntity<User> result = ResultEntity.bad("xxx");
+ * //详细用法，注意:构造器以status()函数开头，以result()或者build()函数结尾;
+ * ResultEntity<User> result = ResultEntity.status(ResultEntity.OK).xdata("some extend data").result(user);
+ * ResultEntity<User> result = ResultEntity.status(ResultEntity.BAD).message("some message").xdata("some extend data").build();
+ * @author walden
+ * @param <T>
+ */
 @ApiModel("结果实体对象")
 public class ResultEntity<T> {
-
     public static final int OK = 1;
     public static final int BAD = 0;
     private int status;
@@ -69,17 +84,14 @@ public class ResultEntity<T> {
         this.xdata = xdata;
     }
 
-    public ResultEntity<T> xdata(Object xdata) {
-        this.xdata = xdata;
-        return this;
-    }
 
     public interface Builder {
-        <T> ResultEntity<T> build();
 
         Builder message(String message);
 
         Builder xdata(Object xdata);
+
+        <T> ResultEntity<T> build();
 
         <T> ResultEntity<T> result(T result);
     }
@@ -96,11 +108,13 @@ public class ResultEntity<T> {
             this.status = status;
         }
 
+        @Override
         public Builder message(String message) {
             this.message = message;
             return this;
         }
 
+        @Override
         public Builder xdata(Object xdata) {
             this.xdata = xdata;
             return this;
@@ -111,6 +125,7 @@ public class ResultEntity<T> {
             return result(null);
         }
 
+        @Override
         public <T> ResultEntity<T> result(T result) {
             return new ResultEntity<>(status, message, result, xdata);
         }
@@ -119,6 +134,7 @@ public class ResultEntity<T> {
     public static Builder status(int status) {
         return new ResultBuilder(status);
     }
+
 
     public static <T> ResultEntity<T> ok() {
         return status(ResultEntity.OK).build();

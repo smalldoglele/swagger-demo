@@ -17,7 +17,12 @@ public class PetController {
     @ApiImplicitParam(name = "id", value = "用户id", paramType = "query")
     public ResultEntity<User> get(String id) {
         User user = new User("王利强", 30, "濮阳");
-        ResultEntity<User> result = ResultEntity.bad("xxxxx").xdata("xx");
-        return result;
+
+        ResultEntity<User> result1 = ResultEntity.ok();
+        ResultEntity<User> result2 = ResultEntity.ok(user);
+        ResultEntity<User> result3 = ResultEntity.bad("xxx");
+        ResultEntity<User> result4 = ResultEntity.status(ResultEntity.OK).xdata("some extend data").result(user);
+        ResultEntity<User> result5 = ResultEntity.status(ResultEntity.BAD).message("xx").xdata("some extend data").build();
+        return result1;
     }
 }
