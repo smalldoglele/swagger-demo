@@ -14,9 +14,10 @@ import io.swagger.annotations.ApiModel;
  * ResultEntity<User> result = ResultEntity.ok(user);
  * //快捷方法 返回 status=0 和失败信息
  * ResultEntity<User> result = ResultEntity.bad("xxx");
- * //详细用法，注意:构造器以status()函数开头，以result()或者build()函数结尾;
- * ResultEntity<User> result = ResultEntity.status(ResultEntity.OK).xdata("some extend data").result(user);
- * ResultEntity<User> result = ResultEntity.status(ResultEntity.BAD).message("some message").xdata("some extend data").build();
+ * //详细用法，注意:构造器以status()函数开头,以result()或者build()函数结尾，没有设置result或报错信息都以build()结尾
+ * ResultEntity<User> result = ResultEntity.ok().xdata("some extend data").result(user);
+ * ResultEntity<User> result = ResultEntity.bad().message("xxxxx").xdata("some extend data").result(user);
+ * ResultEntity<User> result = ResultEntity.status(ResultEntity.OK).message("some message").xdata("some extend data").build();
  * @author walden
  * @param <T>
  */
