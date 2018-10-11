@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModel;
  * <p>使用示例:
  * <pre>
  * //快捷方法 返回status=1
- * ResultEntity<User> result = ResultEntity.ok();
+ * ResultEntity<User> result = ResultEntity.ok().build();
+ * //快捷方法 返回status=0
+ * ResultEntity<User> result = ResultEntity.bad().build();
  * //快捷方法 返回status=1 和 result={user}
  * ResultEntity<User> result = ResultEntity.ok(user);
  * //快捷方法 返回 status=0 和失败信息
@@ -136,8 +138,12 @@ public class ResultEntity<T> {
     }
 
 
-    public static <T> ResultEntity<T> ok() {
-        return status(ResultEntity.OK).build();
+    public static Builder ok() {
+        return status(ResultEntity.OK);
+    }
+
+    public static Builder bad() {
+        return status(ResultEntity.BAD);
     }
 
     public static <T> ResultEntity<T> ok(T result) {
