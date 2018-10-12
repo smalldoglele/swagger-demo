@@ -1,6 +1,7 @@
 package cn.vagile.swagger.demo.other;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 结果实体类
@@ -15,20 +16,24 @@ import io.swagger.annotations.ApiModel;
  * //快捷方法 返回 status=0 和失败信息
  * ResultEntity<User> result = ResultEntity.bad("xxx");
  * //详细用法，注意:构造器以status()函数开头,以result()或者build()函数结尾，没有设置result或报错信息都以build()结尾
- * ResultEntity<User> result = ResultEntity.ok().xdata("some extend data").result(user);
- * ResultEntity<User> result = ResultEntity.bad().message("xxxxx").xdata("some extend data").result(user);
- * ResultEntity<User> result = ResultEntity.status(ResultEntity.OK).message("some message").xdata("some extend data").build();
+ * ResultEntity<User> result = ResultEntity.ok().spare("some extend data").result(user);
+ * ResultEntity<User> result = ResultEntity.bad().message("xxxxx").spare("some extend data").result(user);
+ * ResultEntity<User> result = ResultEntity.status(ResultEntity.OK).message("some message").spare("some extend data").build();
  * @author walden
  * @param <T>
  */
-@ApiModel("结果实体对象")
+@ApiModel(value = "ResultEntity", description = "结果实体类")
 public class ResultEntity<T> {
     public static final int OK = 1;
     public static final int BAD = 0;
+    @ApiModelProperty(value = "结果状态: 0-失败 1-成功", position = 1)
     private int status;
+    @ApiModelProperty(value = "提示信息", position = 2)
     private String message;
+    @ApiModelProperty(value = "结果数据", position = 3)
     private T result;
-    private Object xdata;
+    @ApiModelProperty(value = "备用字段", position = 4)
+    private Object spare;
 
     public ResultEntity() {
     }
@@ -48,11 +53,11 @@ public class ResultEntity<T> {
         this.message = message;
     }
 
-    public ResultEntity(int status, String message, T result, Object xdata) {
+    public ResultEntity(int status, String message, T result, Object spare) {
         this.status = status;
         this.message = message;
         this.result = result;
-        this.xdata = xdata;
+        this.spare = spare;
     }
 
     public int getStatus() {
@@ -79,20 +84,19 @@ public class ResultEntity<T> {
         this.result = result;
     }
 
-    public Object getXdata() {
-        return xdata;
+    public Object getSpare() {
+        return spare;
     }
 
-    public void setXdata(Object xdata) {
-        this.xdata = xdata;
+    public void setSpare(Object spare) {
+        this.spare = spare;
     }
-
 
     public interface Builder {
 
         Builder message(String message);
 
-        Builder xdata(Object xdata);
+        Builder spare(Object spare);
 
         <T> ResultEntity<T> build();
 
@@ -105,7 +109,7 @@ public class ResultEntity<T> {
 
         private String message;
 
-        private Object xdata;
+        private Object spare;
 
         public ResultBuilder(int status) {
             this.status = status;
@@ -118,8 +122,8 @@ public class ResultEntity<T> {
         }
 
         @Override
-        public Builder xdata(Object xdata) {
-            this.xdata = xdata;
+        public Builder spare(Object spare) {
+            this.spare = spare;
             return this;
         }
 
@@ -130,7 +134,7 @@ public class ResultEntity<T> {
 
         @Override
         public <T> ResultEntity<T> result(T result) {
-            return new ResultEntity<>(status, message, result, xdata);
+            return new ResultEntity<>(status, message, result, spare);
         }
     }
 

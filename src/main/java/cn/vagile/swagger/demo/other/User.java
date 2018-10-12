@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@ApiModel("用户信息")
+@ApiModel(value="User",description="用户信息类")
 public class User {
     @ApiModelProperty("姓名")
     private String name;
